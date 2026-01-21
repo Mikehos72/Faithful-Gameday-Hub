@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Main Screen</title>
+  <style>
+    body{margin:0;background:#000;}
+    #stage{position:relative;width:100%;}
+    #main{width:100%;height:auto;display:block;}
+    #layer{position:absolute;left:0;right:0;bottom:6%;}
+    #btnTable{width:100%;}
+    .imgBtn{background:transparent;border:0;padding:0;cursor:pointer;}
+    .btnImg{width:70%;height:auto;}
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <img id="main" alt="Main Screen">
+    <div id="layer">
+      <table id="btnTable" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td width="50%" align="center" valign="middle">
+            <button id="hypeBtn" class="imgBtn" type="button">
+              <img id="hypeImg" class="btnImg" alt="Hype Song Button">
+            </button>
+          </td>
+          <td width="50%" align="center" valign="middle">
+            <button id="hornBtn" class="imgBtn" type="button">
+              <img id="hornImg" class="btnImg" alt="Sound the Foghorn Button">
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var files = {
+        mainImg: "Main Screen.png",
+        hypeImg: "Hype Song Button.png",
+        hornImg: "Sound the Foghorn Button.png",
+        hypeMp3: "Song 2 Blur.mp3",
+        hornMp3: "Foghorn Download.mp3"
+      };
+
+      var main = document.getElementById("main");
+      var hypeImg = document.getElementById("hypeImg");
+      var hornImg = document.getElementById("hornImg");
+
+      main.src = encodeURI(files.mainImg);
+      hypeImg.src = encodeURI(files.hypeImg);
+      hornImg.src = encodeURI(files.hornImg);
+
+      var hypeAudio = new Audio(encodeURI(files.hypeMp3));
+      var hornAudio = new Audio(encodeURI(files.hornMp3));
+
+      hypeAudio.preload = "auto";
+      hornAudio.preload = "auto";
+
+      hypeAudio.loop = false;
+      hornAudio.loop = false;
+
+      function stopAndReset(a) {
+        try {
+          a.pause();
+          a.currentTime = 0;
+        } catch (err) {
+        }
+      }
+
+      function playOnce(target, other) {
+        stopAndReset(other);
+        stopAndReset(target);
+        var p;
+        try {
+          p = target.play();
+        } catch (err) {
+          return;
+        }
+        if (p && typeof p.catch === "function") {
+          p.catch(function () {});
+        }
+      }
+
+      document.getElementById("hypeBtn").addEventListener("click", function () {
+        playOnce(hypeAudio, hornAudio);
+      });
+
+      document.getElementById("hornBtn").addEventListener("click", function () {
+        playOnce(hornAudio, hypeAudio);
+      });
+    })();
+  </script>
+</body>
+</html>
