@@ -6,10 +6,10 @@
     body{margin:0;background:#000;}
     #stage{position:relative;width:100%;}
     #main{width:100%;height:auto;display:block;}
-    #layer{position:absolute;left:0;right:0;bottom:5%;}
+    #layer{position:absolute;left:0;right:0;bottom:1.5%;pointer-events:auto;}
     #btnTable{width:100%;}
     .imgBtn{background:transparent;border:0;padding:0;cursor:pointer;}
-    .btnImg{width:70%;height:auto;}
+    .btnImg{width:min(520px,38vw);height:auto;display:block;}
   </style>
 </head>
 <body>
@@ -18,12 +18,12 @@
     <div id="layer">
       <table id="btnTable" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td width="60%" align="center" valign="middle">
+          <td width="50%" align="center" valign="middle">
             <button id="hypeBtn" class="imgBtn" type="button">
               <img id="hypeImg" class="btnImg" alt="Hype Song Button">
             </button>
           </td>
-          <td width="60%" align="center" valign="middle">
+          <td width="50%" align="center" valign="middle">
             <button id="hornBtn" class="imgBtn" type="button">
               <img id="hornImg" class="btnImg" alt="Sound the Foghorn Button">
             </button>
