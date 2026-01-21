@@ -3,14 +3,30 @@
 <head>
   <title>Main Screen</title>
   <style>
-    body{margin:0;background:#000;}
-    #stage{position:relative;width:100%;}
-    #main{width:100%;height:auto;display:block;}
-    #layer{position:absolute;left:0;right:0;bottom:3in;pointer-events:auto;}
-    #btnTable{width:100%;}
-    .imgBtn{background:transparent;border:0;padding:0;cursor:pointer;}
-    .btnImg{width:(780px,51vw);height:auto;display:block;}
-  </style>
+  body{margin:0;background:#000;}
+  #stage{position:relative;width:100%;}
+  #main{width:100%;height:auto;display:block;}
+
+  #layer{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:96px !important;
+    pointer-events:auto;
+  }
+
+  #btnTable{width:100%;}
+  .imgBtn{background:transparent;border:0;padding:0;cursor:pointer;}
+
+  .btnImg{
+    width:min(780px,51vw) !important;
+    height:auto;
+    display:block;
+  }
+
+  td{vertical-align:bottom;}
+</style>
+
 </head>
 <body>
   <div id="stage">
