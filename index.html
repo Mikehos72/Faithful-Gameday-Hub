@@ -1,51 +1,79 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Main Screen</title>
   <style>
-  body{margin:0;background:#000;}
-  #stage{position:relative;width:100%;}
-  #main{width:100%;height:auto;display:block;}
+    body{margin:0;background:#000;}
+    #stage{position:relative;width:100%;}
+    #main{width:100%;height:auto;display:block;}
 
-  #layer{
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:96px !important;
-    pointer-events:auto;
-  }
+    /* Control knobs */
+    :root{
+      --raisePx: 144px;   /* 1.5 inches higher (96px per inch) */
+      --sepPx: 192px;     /* 2 inches left and right from center */
+      --baseBottomPx: 96px; /* your current baseline bottom */
+    }
 
-  #btnTable{width:clamp(280px, 20vw, 520px);height:auto;}
-  .imgBtn{background:transparent;border:0;padding:0;cursor:pointer;}
+    /* Button layer vertical position */
+    #layer{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom: calc(var(--baseBottomPx) + var(--raisePx));
+      pointer-events:auto;
+    }
 
-  .btnImg{
-    width:(468px,30.6vw) !important;
-    height:auto;
-    display:block;
-  }
+    /* Two fixed anchor points around center */
+    .btnWrap{
+      position:absolute;
+      bottom:0;
+      transform: translateX(-50%);
+    }
 
-  td{vertical-align:bottom;}
-</style>
+    #hypeWrap{ left: calc(50% - var(--sepPx)); }
+    #hornWrap{ left: calc(50% + var(--sepPx)); }
 
+    .imgBtn{
+      background:transparent;
+      border:0;
+      padding:0;
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    /* Button image size */
+    .btnImg{
+      width: clamp(180px, 14vw, 320px);
+      height:auto;
+      display:block;
+    }
+
+    /* Safety for small screens so buttons do not go off screen */
+    @media (max-width: 700px){
+      :root{ --sepPx: 120px; }
+      .btnImg{ width: clamp(140px, 22vw, 240px); }
+    }
+  </style>
 </head>
+
 <body>
   <div id="stage">
     <img id="main" alt="Main Screen">
+
     <div id="layer">
-      <table id="btnTable" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td width="100%" align="center" valign="middle">
-            <button id="hypeBtn" class="imgBtn" type="button">
-              <img id="hypeImg" class="btnImg" alt="Hype Song Button">
-            </button>
-          </td>
-          <td width="50%" align="center" valign="middle">
-            <button id="hornBtn" class="imgBtn" type="button">
-              <img id="hornImg" class="btnImg" alt="Sound the Foghorn Button">
-            </button>
-          </td>
-        </tr>
-      </table>
+      <div id="hypeWrap" class="btnWrap">
+        <button id="hypeBtn" class="imgBtn" type="button">
+          <img id="hypeImg" class="btnImg" alt="Hype Song Button">
+        </button>
+      </div>
+
+      <div id="hornWrap" class="btnWrap">
+        <button id="hornBtn" class="imgBtn" type="button">
+          <img id="hornImg" class="btnImg" alt="Sound the Foghorn Button">
+        </button>
+      </div>
     </div>
   </div>
 
@@ -72,37 +100,26 @@
 
       hypeAudio.preload = "auto";
       hornAudio.preload = "auto";
-
       hypeAudio.loop = false;
       hornAudio.loop = false;
 
-      function stopAndReset(a) {
-        try {
-          a.pause();
-          a.currentTime = 0;
-        } catch (err) {
-        }
+      function stopAndReset(a){
+        try{ a.pause(); a.currentTime = 0; }catch(e){}
       }
 
-      function playOnce(target, other) {
+      function playOnce(target, other){
         stopAndReset(other);
         stopAndReset(target);
         var p;
-        try {
-          p = target.play();
-        } catch (err) {
-          return;
-        }
-        if (p && typeof p.catch === "function") {
-          p.catch(function () {});
-        }
+        try{ p = target.play(); }catch(e){ return; }
+        if(p && typeof p.catch === "function"){ p.catch(function(){}); }
       }
 
-      document.getElementById("hypeBtn").addEventListener("click", function () {
+      document.getElementById("hypeBtn").addEventListener("click", function(){
         playOnce(hypeAudio, hornAudio);
       });
 
-      document.getElementById("hornBtn").addEventListener("click", function () {
+      document.getElementById("hornBtn").addEventListener("click", function(){
         playOnce(hornAudio, hypeAudio);
       });
     })();
