@@ -10,9 +10,9 @@
     #main{width:100%;height:auto;display:block;}
 
     :root{
-      --raisePx: 144px;      /* 1.5 inches higher (96px per inch) */
-      --baseBottomPx: 96px;  /* your current baseline bottom */
-      --spacingPx: 300px;    /* distance between buttons */
+      --raisePx: 144px;
+      --baseBottomPx: 96px;
+      --edgeInsetPx: 120px; /* space from left and right edges */
     }
 
     #layer{
@@ -23,17 +23,15 @@
       pointer-events:auto;
     }
 
-    .btnWrap{
-      position:absolute;
-      bottom:0;
-      left:50%;
-      transform: translate(-50%, 0);
+    /* 3 buttons evenly spaced across the row, with one naturally centered */
+    #btnRow{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      padding: 0 var(--edgeInsetPx);
+      box-sizing:border-box;
     }
-
-    /* 3 evenly spaced buttons centered as a group */
-    #hypeWrap{   transform: translate(calc(-50% - (2.5 * var(--spacingPx))), 0); }
-    #hornWrap{   transform: translate(calc(-50% - (0.5 * var(--spacingPx))), 0); }
-    #bangWrap{   transform: translate(calc(-50% + (2.5 * var(--spacingPx))), 0); }
 
     .imgBtn{
       background:transparent;
@@ -50,12 +48,12 @@
     }
 
     @media (max-width: 900px){
-      :root{ --spacingPx: 180px; }
+      :root{ --edgeInsetPx: 60px; }
       .btnImg{ width: clamp(140px, 20vw, 240px); }
     }
 
     @media (max-width: 700px){
-      :root{ --spacingPx: 140px; }
+      :root{ --edgeInsetPx: 24px; }
       .btnImg{ width: clamp(120px, 22vw, 200px); }
     }
   </style>
@@ -66,51 +64,44 @@
     <img id="main" alt="Main Screen">
 
     <div id="layer">
-      <div id="hypeWrap" class="btnWrap">
+      <div id="btnRow">
         <button id="hypeBtn" class="imgBtn" type="button">
           <img id="hypeImg" class="btnImg" alt="Get Hype">
         </button>
-      </div>
 
-      <div id="hornWrap" class="btnWrap">
         <button id="hornBtn" class="imgBtn" type="button">
           <img id="hornImg" class="btnImg" alt="Foghorn Button">
         </button>
-      </div>
 
-      <div id="bangWrap" class="btnWrap">
         <button id="bangBtn" class="imgBtn" type="button">
           <img id="bangImg" class="btnImg" alt="Bang Bang">
         </button>
       </div>
+    </div>
+  </div>
 
   <script>
     (function () {
       var files = {
         mainImg: "Main Screen.png",
-
         hypeImg: "Get Hype.png",
         hornImg: "Foghorn Button.png",
         bangImg: "Bang Bang.png",
         hypeMp3: "Song 2 Blur.mp3",
         hornMp3: "Foghorn Download.mp3",
-        bangMp3: "Bang Bang.mp3",
+        bangMp3: "Bang Bang.mp3"
       };
 
-      var main = document.getElementById("main");
-      main.src = encodeURI(files.mainImg);
-
+      document.getElementById("main").src = encodeURI(files.mainImg);
       document.getElementById("hypeImg").src = encodeURI(files.hypeImg);
       document.getElementById("hornImg").src = encodeURI(files.hornImg);
       document.getElementById("bangImg").src = encodeURI(files.bangImg);
-      document.getElementById("introImg").src = encodeURI(files.introImg);
 
-      var hypeAudio  = new Audio(encodeURI(files.hypeMp3));
-      var hornAudio  = new Audio(encodeURI(files.hornMp3));
-      var bangAudio  = new Audio(encodeURI(files.bangMp3));
-      var introAudio = new Audio(encodeURI(files.introMp3));
+      var hypeAudio = new Audio(encodeURI(files.hypeMp3));
+      var hornAudio = new Audio(encodeURI(files.hornMp3));
+      var bangAudio = new Audio(encodeURI(files.bangMp3));
 
-      [hypeAudio, hornAudio, bangAudio, introAudio].forEach(function(a){
+      [hypeAudio, hornAudio, bangAudio].forEach(function(a){
         a.preload = "auto";
         a.loop = false;
       });
@@ -123,7 +114,6 @@
         stopAndReset(hypeAudio);
         stopAndReset(hornAudio);
         stopAndReset(bangAudio);
-        stopAndReset(introAudio);
       }
 
       function playOnce(target){
@@ -143,10 +133,6 @@
 
       document.getElementById("bangBtn").addEventListener("click", function(){
         playOnce(bangAudio);
-      });
-
-      document.getElementById("introBtn").addEventListener("click", function(){
-        playOnce(introAudio);
       });
     })();
   </script>
